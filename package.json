@@ -1,0 +1,19 @@
+{
+  "name": "uregina-baseline-api",
+  "version": "1.0.0",
+  "description": "An express API for URegina Library Clone ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/romy6047/uregina-baseline-api.git"
+  },
+  "author": "Sebastian Romy Gomes",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/romy6047/uregina-baseline-api#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
