@@ -2,9 +2,10 @@
   "name": "uregina-baseline-api",
   "version": "1.0.0",
   "description": "An express API for URegina Library Clone ",
-  "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=develop node index.js"
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=develop nodemon ./src/index.ts",
+    "prod-start": "tsc & cross-env NODE_ENV=develop node ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,11 @@
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "typescript": "^5.4.5"
   }
 }
