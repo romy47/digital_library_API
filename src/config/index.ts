@@ -10,4 +10,5 @@ if (env.error) {
 
 export const DefaultConfig = {
     port: parseInt(process.env.PORT as string, 10),
+    mongoConnectionString: process.env.MONGO_CONNECTION_STRING as string,
 }

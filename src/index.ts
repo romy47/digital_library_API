@@ -1,8 +1,12 @@
-import express from 'express';
 import { DefaultConfig } from './config';
+import { createServer } from './server';
 
-const app = express();
 
-app.listen(DefaultConfig.port, () => {
-    console.log("Express App running on port " + DefaultConfig.port)
-});
+async function main(): Promise<void> {
+    const app = await createServer();
+    app.listen(DefaultConfig.port, () => {
+        console.log("Express App running on port " + DefaultConfig.port)
+    });
+}
+
+main()
