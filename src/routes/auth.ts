@@ -1,9 +1,6 @@
 import { Router } from 'express';
+import { authController } from '../controllers/auth';
 
 const authRrouter: Router = Router();
-authRrouter.route('/signup').post((req, res, next) => {
-    res.status(200).send({
-        message: 'Signup Route Working!',
-    });
-});
+authRrouter.route('/signup').post(authController.signup);
 export default authRrouter;
