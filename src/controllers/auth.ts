@@ -1,10 +1,14 @@
 import { Request, Response, NextFunction } from "express";
+import { userService } from './../services/auth'
 
 class AuthController {
     async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
+        console.log(req.body)
+        const user = await userService.CreateUser(req.body)
         res.status(200).send({
-            message: 'Signup Route and Controller Working!',
-        })
+            message: 'New User Created',
+            user: user
+        });
     }
 }
 

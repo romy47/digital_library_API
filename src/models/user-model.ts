@@ -1,14 +1,5 @@
 import { Schema, Types, model } from "mongoose";
-
-export default interface User {
-    _id: Types.ObjectId;
-    firstName: string;
-    lastName: string;
-    email?: string;
-    password?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+import User from "./user-interface";
 
 const userSchema = new Schema<User>(
     {
