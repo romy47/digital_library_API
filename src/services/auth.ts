@@ -1,23 +1,21 @@
-import User from '../models/user-interface';
+import IUser, { UserModel } from '../models/user';
 import bcrypt from 'bcrypt';
 import { userRepository } from './../repositories/user'
 
 class UserService {
-    async CreateUser(payload: any): Promise<User> {
-        console.log(payload)
-        const userObj: User = {
+    async CreateUser(payload: any): Promise<IUser> {
+        const user = new UserModel({
             firstName: payload.firstName,
             lastName: payload.lastName,
             email: payload.email,
             password: payload.password
-        } as User;
-        const user = await userRepository.getByEmail(userObj.email || '');
-        if (!user) {
+        })
+        const existingUser = await userRepository.getByEmail(user.email || '');
+        if (!existingUser) {
             console.log('No user found');
         }
-        console.log(userObj)
-        userObj.password = bcrypt.hashSync(userObj.password as string, 10);
-        return await userRepository.create(userObj);
+        user.password = bcrypt.hashSync(user.password as string, 10);
+        return await userRepository.create(user);
     }
 }
 

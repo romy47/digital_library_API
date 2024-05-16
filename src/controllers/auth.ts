@@ -3,7 +3,6 @@ import { userService } from './../services/auth'
 
 class AuthController {
     async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
-        console.log(req.body)
         const user = await userService.CreateUser(req.body)
         res.status(200).send({
             message: 'New User Created',

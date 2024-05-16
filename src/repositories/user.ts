@@ -1,12 +1,11 @@
-import { UserModel } from "../models/user-model";
-import User from "../models/user-interface";
+import IUser, { UserModel } from "../models/user";
 
 class UserRepository {
-    async create(user: User): Promise<User> {
+    async create(user: IUser): Promise<IUser> {
         return UserModel.create(user);
     }
 
-    async getByEmail(email: string): Promise<User | null> {
+    async getByEmail(email: string): Promise<IUser | null> {
         return UserModel.findOne({
             where: { email: email }
         });
