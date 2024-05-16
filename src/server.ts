@@ -3,6 +3,7 @@ import cors from 'cors';
 import { Application } from 'express';
 import router from './routes';
 import { initDB } from './database';
+import centralErrorHandler from './middlewares/central-error-handler';
 
 export async function createServer(): Promise<Application> {
     const app = express();
@@ -17,5 +18,6 @@ export async function createServer(): Promise<Application> {
     app.use(cors(corsOption));
     app.use(`/api/`, router);
     await initDB();
+    app.use(centralErrorHandler);
     return app;
 }
