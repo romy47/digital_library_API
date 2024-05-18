@@ -11,4 +11,7 @@ if (env.error) {
 export const DefaultConfig = {
     port: parseInt(process.env.PORT as string, 10),
     mongoConnectionString: process.env.MONGO_CONNECTION_STRING as string,
+    accessTokenExpiresSeconds: parseInt(process.env.ACCESS_TOKEN_EXPIRES_SECONDS as string, 10),
+    refreshTokenExpiresSeconds: parseInt(process.env.REFRESH_TOKEN_EXPIRES_SECONDS as string, 10),
+    jwtKey: process.env.JWT_KEY as string,
 }

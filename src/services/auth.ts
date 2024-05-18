@@ -1,22 +1,32 @@
-import IUser, { UserModel } from '../models/user';
+import IUser, { IUserDoc, UserModel } from '../models/user';
 import bcrypt from 'bcrypt';
 import { userRepository } from './../repositories/user'
+import IUserInput from '../models/user';
 
-class UserService {
-    async CreateUser(payload: any): Promise<IUser> {
-        const user = new UserModel({
-            firstName: payload.firstName,
-            lastName: payload.lastName,
-            email: payload.email,
-            password: payload.password
-        })
-        const existingUser = await userRepository.getByEmail(user.email || '');
-        if (!existingUser) {
-            console.log('No user found');
+class AuthService {
+    async signup(payload: IUserInput): Promise<IUserDoc> {
+        const existingUser = await userRepository.getByEmail(payload.email || '');
+        if (existingUser) {
+            throw Error('User Exists. Todo: Do better error handling');
         }
-        user.password = bcrypt.hashSync(user.password as string, 10);
-        return await userRepository.create(user);
+        payload.password = bcrypt.hashSync(payload.password as string, 10);
+        const user = await userRepository.create(payload);
+
+        return user;
+    }
+
+    async login(email: string, password: string): Promise<IUserDoc> {
+        console.log(email, password)
+
+        const existingUser = await userRepository.getByEmail(email);
+        console.log(existingUser)
+
+        console.log(await bcrypt.compare(password, existingUser ? existingUser.password : ''))
+        if (!existingUser || await bcrypt.compare(password, existingUser.password) == false) {
+            throw Error('Unauthorized. Todo: Do better error handling');
+        }
+        return existingUser;
     }
 }
 
-export const userService = new UserService();
+export const authService = new AuthService();

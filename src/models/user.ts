@@ -1,16 +1,25 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model, Document, Model } from "mongoose";
 
-export default interface IUser {
-    _id?: Types.ObjectId;
+export interface IUser {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
-const userSchema = new Schema<IUser>(
+export default interface IUserInput extends Omit<IUser, 'createdAt' | 'updatedAt'> {
+}
+
+export interface IUserOutput extends Omit<IUser, 'password'> {
+}
+
+export interface IUserDoc extends IUser, Document {
+    response(): IUserOutput;
+}
+
+const userSchema = new Schema<IUserDoc>(
     {
         firstName: {
             type: Schema.Types.String,
@@ -33,8 +42,20 @@ const userSchema = new Schema<IUser>(
         },
     },
     {
-        timestamps: true
-    }
-);
+        timestamps: true,
+    },
+)
 
-export const UserModel = model<IUser>('User', userSchema, 'users');
+userSchema.method('response', function (): IUserOutput {
+    const userObject = this.toObject();
+    return {
+        email: userObject.email,
+        firstName: userObject.firstName,
+        lastName: userObject.lastName,
+        createdAt: userObject.createdAt,
+        updatedAt: userObject.updatedAt,
+    }
+})
+
+export const UserModel = model<IUserDoc>('User', userSchema, 'users');
+

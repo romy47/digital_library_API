@@ -6,4 +6,7 @@ const authRrouter: Router = Router();
 authRrouter.route('/signup').post(
     catchAsyncError(authController.signup)
 );
+authRrouter.route('/login').post(
+    catchAsyncError(authController.login)
+);
 export default authRrouter;
