@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { authService } from './../services/auth'
 import { tokenService } from './../services/token'
-import { IUserDoc } from "../models/user";
 
 class AuthController {
     async signup(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -22,7 +21,22 @@ class AuthController {
         const accessAndRefreshToken = await tokenService.generateTokens(user);
         res.status(200).send({
             message: 'Login Successful',
-            user: user,
+            user: user.response(),
+            tokens: accessAndRefreshToken
+        });
+    }
+
+    async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+        await authService.logout(req.body.refreshToken);
+        res.status(200);
+    }
+
+    async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const user = await authService.refresh(req.body.refreshToken);
+        const accessAndRefreshToken = await tokenService.generateTokens(user);
+        res.status(200).send({
+            message: 'Refresh Successful',
+            user: user.response(),
             tokens: accessAndRefreshToken
         });
     }

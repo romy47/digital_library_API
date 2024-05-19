@@ -1,14 +1,18 @@
+import { JwtPayload } from "jsonwebtoken";
 import { Schema, Types, model } from "mongoose";
 
-export default interface IToken {
+export interface IToken {
     _id: Types.ObjectId;
     token: string;
-    userId: string;
+    userId: Types.ObjectId;
     type: string;
-    expires: Date;
+    expires: number;
     valid: Boolean;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface ITokenInput extends Omit<IToken, '_id' | 'createdAt' | 'updatedAt'> {
 }
 
 export const tokenTypes = {
@@ -24,7 +28,7 @@ const tokenSchema = new Schema<IToken>(
             index: true,
         },
         userId: {
-            type: String,
+            type: Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
@@ -34,7 +38,7 @@ const tokenSchema = new Schema<IToken>(
             required: true,
         },
         expires: {
-            type: Date,
+            type: Number,
             required: true,
         },
         valid: {

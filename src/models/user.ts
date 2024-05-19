@@ -1,25 +1,24 @@
-import { Schema, Types, model, Document, Model } from "mongoose";
+import { Schema, Types, model, Document } from "mongoose";
 
 export interface IUser {
+    _id: Types.ObjectId
     firstName: string;
     lastName: string;
     email: string;
     password: string;
     createdAt: Date;
     updatedAt: Date;
-}
-
-export default interface IUserInput extends Omit<IUser, 'createdAt' | 'updatedAt'> {
-}
-
-export interface IUserOutput extends Omit<IUser, 'password'> {
-}
-
-export interface IUserDoc extends IUser, Document {
     response(): IUserOutput;
 }
 
-const userSchema = new Schema<IUserDoc>(
+export interface IUserInput extends Omit<IUser, 'createdAt' | 'updatedAt' | 'response' | '_id'> {
+}
+
+export interface IUserOutput extends Omit<IUser, 'password' | 'response'> {
+}
+
+
+const userSchema = new Schema<IUser>(
     {
         firstName: {
             type: Schema.Types.String,
@@ -54,8 +53,9 @@ userSchema.method('response', function (): IUserOutput {
         lastName: userObject.lastName,
         createdAt: userObject.createdAt,
         updatedAt: userObject.updatedAt,
+        _id: userObject._id
     }
 })
 
-export const UserModel = model<IUserDoc>('User', userSchema, 'users');
+export const UserModel = model<IUser>('User', userSchema, 'users');
 

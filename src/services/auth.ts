@@ -1,10 +1,11 @@
-import IUser, { IUserDoc, UserModel } from '../models/user';
+import { IUserOutput, UserModel, IUserInput, IUser } from '../models/user';
 import bcrypt from 'bcrypt';
 import { userRepository } from './../repositories/user'
-import IUserInput from '../models/user';
-
+import { tokenService } from './token';
+import { IToken, tokenTypes } from '../models/token';
+import { Types } from 'mongoose';
 class AuthService {
-    async signup(payload: IUserInput): Promise<IUserDoc> {
+    async signup(payload: IUserInput): Promise<IUser> {
         const existingUser = await userRepository.getByEmail(payload.email || '');
         if (existingUser) {
             throw Error('User Exists. Todo: Do better error handling');
@@ -15,17 +16,47 @@ class AuthService {
         return user;
     }
 
-    async login(email: string, password: string): Promise<IUserDoc> {
-        console.log(email, password)
-
+    async login(email: string, password: string): Promise<IUser> {
         const existingUser = await userRepository.getByEmail(email);
-        console.log(existingUser)
-
-        console.log(await bcrypt.compare(password, existingUser ? existingUser.password : ''))
         if (!existingUser || await bcrypt.compare(password, existingUser.password) == false) {
             throw Error('Unauthorized. Todo: Do better error handling');
         }
         return existingUser;
+    }
+
+    async getUserById(id: Types.ObjectId): Promise<IUser> {
+        const user = await userRepository.getById(id);
+        if (!user) {
+            throw Error('User Not Found. Todo: Do better error handling');
+        }
+        return user;
+    }
+
+    async logout(refreshToken: string): Promise<void> {
+        const delCount = await tokenService.deleteDBToken(refreshToken)
+        if (delCount < 1) {
+            throw Error('Refresh Token Not Found. Todo: Do better error handling');
+        }
+    }
+
+    async refresh(refreshToken: string): Promise<IUser> {
+        const payload = tokenService.verifyJWTToken(refreshToken);
+        if (!payload) {
+            throw Error('Invalid Token. Todo: Do better error handling');
+        }
+        const dbToken = await tokenService.getToken(refreshToken);
+        if (!dbToken) {
+            throw Error('Invalid Token. Todo: Do better error handling');
+        }
+        const user = await this.getUserById(dbToken._id);
+        if (!user) {
+            throw Error('User Not Found. Todo: Do better error handling');
+        }
+        const delCount = await tokenService.deleteDBToken(refreshToken);
+        if (delCount < 1) {
+            throw Error('Refresh Token Not Found. Todo: Do better error handling');
+        }
+        return user;
     }
 }
 
