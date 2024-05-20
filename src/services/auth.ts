@@ -48,7 +48,8 @@ class AuthService {
         if (!dbToken) {
             throw Error('Invalid Token. Todo: Do better error handling');
         }
-        const user = await this.getUserById(dbToken._id);
+
+        const user = await this.getUserById(dbToken.userId);
         if (!user) {
             throw Error('User Not Found. Todo: Do better error handling');
         }

@@ -6,7 +6,7 @@ export interface IToken {
     token: string;
     userId: Types.ObjectId;
     type: string;
-    expires: number;
+    expires: Date;
     valid: Boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -38,7 +38,7 @@ const tokenSchema = new Schema<IToken>(
             required: true,
         },
         expires: {
-            type: Number,
+            type: Date,
             required: true,
         },
         valid: {

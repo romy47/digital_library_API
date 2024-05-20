@@ -15,7 +15,6 @@ authRrouter.route('/logout').post(
     catchAsyncError(authController.logout)
 );
 authRrouter.route('/refresh').post(
-    catchAsyncError(restricted),
     catchAsyncError(authController.refresh)
 );
 export default authRrouter;

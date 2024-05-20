@@ -17,4 +17,5 @@ export default async function restricted(req: IRequest, res: Response, next: Nex
     }
     const user = await authService.getUserById(new Types.ObjectId(payload.sub));
     req.user = user;
+    next();
 }   

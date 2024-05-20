@@ -28,7 +28,9 @@ class AuthController {
 
     async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
         await authService.logout(req.body.refreshToken);
-        res.status(200);
+        res.status(200).send({
+            'message': 'Logout Successful'
+        });
     }
 
     async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
