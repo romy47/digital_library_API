@@ -5,7 +5,7 @@ export interface IToken {
     _id: Types.ObjectId;
     token: string;
     userId: Types.ObjectId;
-    type: string;
+    type: tokenTypes;
     expires: Date;
     valid: Boolean;
     createdAt: Date;
@@ -15,9 +15,9 @@ export interface IToken {
 export interface ITokenInput extends Omit<IToken, '_id' | 'createdAt' | 'updatedAt'> {
 }
 
-export const tokenTypes = {
-    ACCESS: 'access',
-    REFRESH: 'refresh',
+export enum tokenTypes {
+    ACCESS = 'access',
+    REFRESH = 'refresh',
 }
 
 const tokenSchema = new Schema<IToken>(

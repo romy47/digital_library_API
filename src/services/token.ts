@@ -12,7 +12,7 @@ export interface JWTClaim extends JwtPayload {
     sub: string,
     exp: number,
     iat: number,
-    type: string
+    type: tokenTypes
 }
 
 class TokenService {
