@@ -7,6 +7,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose, { Types } from 'mongoose';
 import { DefaultConfig } from '../config';
 import { tokenRepository } from '../repositories/token';
+import { AuthTokenExpiredError, BadTokenError } from '../models/api-error';
 
 export interface JWTClaim extends JwtPayload {
     sub: string,
@@ -75,7 +76,17 @@ class TokenService {
     }
 
     verifyJWTToken(token: string): JWTClaim {
-        return jwt.verify(token, DefaultConfig.jwtKey) as JWTClaim
+        let payload;
+        try {
+            payload = jwt.verify(token, DefaultConfig.jwtKey)
+        } catch (e) {
+            if (e instanceof jwt.TokenExpiredError) {
+                throw new AuthTokenExpiredError();
+            } else {
+                throw new BadTokenError();
+            }
+        }
+        return payload as JWTClaim;
     }
 }
 
