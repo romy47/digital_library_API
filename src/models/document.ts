@@ -154,9 +154,9 @@ const documentSchema = new Schema<IDocumentInput>(
             trim: true,
         },
         createdBy: {
-            type: String,
-            maxlength: 50,
-            trim: true,
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
         },
         labels: {
             type: [String],
@@ -167,4 +167,4 @@ const documentSchema = new Schema<IDocumentInput>(
     },
 )
 
-export const documentModel = model<IDocumentInput>('Document', documentSchema, 'documents');
+export const DocumentModel = model<IDocumentInput>('Document', documentSchema, 'documents');
