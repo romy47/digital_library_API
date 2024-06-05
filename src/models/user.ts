@@ -1,4 +1,4 @@
-import { Schema, Types, model, Document } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface IUser {
     _id: Types.ObjectId

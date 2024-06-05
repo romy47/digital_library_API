@@ -20,5 +20,8 @@ export const DefaultConfig = {
     accessTokenExpiresSeconds: parseInt(process.env.ACCESS_TOKEN_EXPIRES_SECONDS as string, 10),
     refreshTokenExpiresSeconds: parseInt(process.env.REFRESH_TOKEN_EXPIRES_SECONDS as string, 10),
     jwtKey: process.env.JWT_KEY as string,
-    environment: process.env.NODE_ENV || EnvironmentType.DEVELOP
+    environment: process.env.NODE_ENV || EnvironmentType.DEVELOP,
+    vid: process.env.VID as string,
+    scope: process.env.SCOPE as string,
+    primo_api_key: process.env.PRIMO_API_KEY as string,
 }

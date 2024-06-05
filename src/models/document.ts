@@ -25,8 +25,8 @@ export interface IDocument {
     page: Number,
     isSaved: Boolean,
     id: String,
-    searchId: String,
-    createdBy: String,
+    searchId: Types.ObjectId,
+    createdBy: Types.ObjectId,
     labels: []
 }
 
@@ -149,9 +149,9 @@ const documentSchema = new Schema<IDocumentInput>(
             trim: true,
         },
         searchId: {
-            type: String,
-            maxlength: 50,
-            trim: true,
+            type: Schema.Types.ObjectId,
+            ref: 'Search',
+            required: true,
         },
         createdBy: {
             type: Schema.Types.ObjectId,
