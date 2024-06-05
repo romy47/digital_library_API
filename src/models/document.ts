@@ -10,7 +10,12 @@ export interface IDocument {
     allIdentifiers: String[],
     peerReviewed: Boolean,
     openAccess: Boolean,
-    facets: IFacet[],
+    facets: {
+        topics: IFacet[],
+        contributors: IFacet[],
+        journalTitles: IFacet[],
+        resourceTypes: IFacet[]
+    },
     creationDate: string,
     doi: String,
     issn: String,
@@ -25,7 +30,6 @@ export interface IDocument {
     page: Number,
     isSaved: Boolean,
     id: String,
-    searchId: Types.ObjectId,
     createdBy: Types.ObjectId,
     labels: []
 }
@@ -39,15 +43,8 @@ const facetSchema = new Schema<IFacet>({
     },
     text: {
         type: String,
-        maxlength: 50,
         trim: true,
     },
-    type: {
-        type: String,
-        maxlength: 50,
-        trim: true,
-    },
-
 })
 
 const documentSchema = new Schema<IDocumentInput>(
@@ -55,22 +52,18 @@ const documentSchema = new Schema<IDocumentInput>(
         title: {
             type: String,
             trim: true,
-            maxlength: 150,
         },
         linkText: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         language: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         publisher: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         allIdentifiers: {
             type: [String],
@@ -84,48 +77,39 @@ const documentSchema = new Schema<IDocumentInput>(
             default: false
         },
         facets: {
-            type: [facetSchema],
-            default: []
+            type: Object,
         },
         creationDate: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         doi: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         issn: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         snippet: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         identifier: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         description: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         source: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         secondarySource: {
             type: String,
             trim: true,
-            maxlength: 50,
         },
         isFocused: {
             type: Boolean,
@@ -133,7 +117,6 @@ const documentSchema = new Schema<IDocumentInput>(
         },
         type: {
             type: String,
-            maxlength: 50,
             trim: true,
         },
         rawObject: {
@@ -145,13 +128,7 @@ const documentSchema = new Schema<IDocumentInput>(
         },
         id: {
             type: String,
-            maxlength: 50,
             trim: true,
-        },
-        searchId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Search',
-            required: true,
         },
         createdBy: {
             type: Schema.Types.ObjectId,

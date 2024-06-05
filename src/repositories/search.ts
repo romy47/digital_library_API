@@ -5,7 +5,6 @@ class SearchRepository {
     async create(search: ISearchInput): Promise<ISearch> {
         return await SearchDocument.create(search);
     }
-
 }
 
 export const searchRepository = new SearchRepository();
