@@ -32,3 +32,4 @@ const searchSchema = new Schema<ISearchInput>(
 )
 
 export const SearchDocument = model<ISearchInput>('Search', searchSchema, 'searches');
+export const SavedSearchDocument = model<ISearchInput>('SavedSearch', searchSchema, 'savedSearches');

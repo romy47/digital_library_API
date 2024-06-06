@@ -5,6 +5,11 @@ export const createSearchBodyValidatorSchema = Joi.object().keys({
     offset: Joi.number().required(),
 })
 
+export const createSavedSearchBodyValidatorSchema = Joi.object().keys({
+    searchTerm: Joi.string().required(),
+    totalDocuments: Joi.number().required(),
+})
+
 export const loginBodyValidatorSchema = Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().min(6).required(),
