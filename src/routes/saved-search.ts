@@ -13,5 +13,9 @@ savedSearchRouter.route('/').post(
     validate(createSavedSearchBodyValidatorSchema, ValidationSource.BODY),
     catchAsyncError(savedSearchController.createSearch)
 );
+savedSearchRouter.route('/').get(
+    catchAsyncError(restricted),
+    catchAsyncError(savedSearchController.getSearches)
+);
 
 export default savedSearchRouter;

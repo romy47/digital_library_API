@@ -12,5 +12,9 @@ searchRouter.route('/').post(
     validate(createSearchBodyValidatorSchema, ValidationSource.BODY),
     catchAsyncError(searchController.createSearch)
 );
+searchRouter.route('/').get(
+    catchAsyncError(restricted),
+    catchAsyncError(searchController.getSearches)
+);
 
 export default searchRouter;

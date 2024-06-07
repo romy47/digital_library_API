@@ -15,6 +15,11 @@ class SavedSearchService {
             } as ISearchInput);
         return search;
     }
+
+    async getSavedSearches(id: Types.ObjectId): Promise<ISearch[]> {
+        const savedSearches = await savedSearchRepository.get(id);
+        return savedSearches;
+    }
 }
 
 export const savedSearchService = new SavedSearchService();

@@ -23,6 +23,11 @@ class SearchService {
         result['_id'] = search._id;
         return result;
     }
+
+    async getSearches(id: Types.ObjectId): Promise<ISearch[]> {
+        const savedSearches = await searchRepository.get(id);
+        return savedSearches;
+    }
 }
 
 export const searchService = new SearchService();

@@ -10,6 +10,11 @@ class SearchController {
         const search = await searchService.createSearch(searchTerm, pageOffset, req.user._id);
         new SuccessResponse('Success', search).send(res);
     }
+
+    async getSearches(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        const savedSearches = await searchService.getSearches(req.user._id);
+        new SuccessResponse('Success', savedSearches).send(res)
+    }
 }
 
 export const searchController = new SearchController();
