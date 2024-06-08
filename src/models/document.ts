@@ -1,5 +1,6 @@
 import { Schema, Types, model, Document } from "mongoose";
 import { IFacet } from "./facet";
+import { ILabel } from "./label";
 
 export interface IDocument {
     _id: Types.ObjectId
@@ -31,7 +32,9 @@ export interface IDocument {
     isSaved: Boolean,
     id: String,
     createdBy: Types.ObjectId,
-    labels: []
+    labels: ILabel[],
+    createdAt: Date,
+    updatedAt: Date
 }
 
 export interface IDocumentInput extends Omit<IDocument, 'createdAt' | 'updatedAt' | '_id'> {
@@ -47,7 +50,7 @@ const facetSchema = new Schema<IFacet>({
     },
 })
 
-const documentSchema = new Schema<IDocumentInput>(
+const documentSchema = new Schema<IDocument>(
     {
         title: {
             type: String,
@@ -136,7 +139,10 @@ const documentSchema = new Schema<IDocumentInput>(
             required: true,
         },
         labels: {
-            type: [String],
+            type: [{
+                type: Schema.ObjectId,
+                ref: 'Label'
+            }],
         },
     },
     {
@@ -144,4 +150,4 @@ const documentSchema = new Schema<IDocumentInput>(
     },
 )
 
-export const DocumentModel = model<IDocumentInput>('Document', documentSchema, 'documents');
+export const DocumentModel = model<IDocument>('Document', documentSchema, 'documents');
