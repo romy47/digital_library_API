@@ -49,6 +49,13 @@ class DocumentController {
         await documentService.deleteDocument(documentId, req.user._id);
         new SuccessResponse('Success').send(res);
     }
+
+    async deleteDocuments(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        const stringDocumentIds = (req.query.documentIds as string).split(',');
+        const documentIds = stringDocumentIds.map(id => new Types.ObjectId(id));
+        const delCount = await documentService.deleteDocuments(documentIds, req.user._id);
+        new SuccessResponse(`Success: Deleted ${delCount} documents`).send(res);
+    }
 }
 
 export const documentController = new DocumentController();

@@ -16,6 +16,10 @@ class DocumentService {
     async deleteDocument(documentId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
         await documentRepository.delete(documentId, userId);
     }
+
+    async deleteDocuments(documentIds: Types.ObjectId[], userId: Types.ObjectId): Promise<number> {
+        return await documentRepository.deleteBatch(documentIds, userId);
+    }
 }
 
 export const documentService = new DocumentService();

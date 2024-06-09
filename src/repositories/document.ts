@@ -25,6 +25,14 @@ class DocumentsRepository {
         await document.deleteOne();
     }
 
+    async deleteBatch(documentIds: Types.ObjectId[], userId: Types.ObjectId): Promise<number> {
+        const del = await DocumentModel.deleteMany({
+            _id: { $in: documentIds },
+            createdBy: userId
+        });
+        return del.deletedCount;
+    }
+
 }
 
 export const documentRepository = new DocumentsRepository();
