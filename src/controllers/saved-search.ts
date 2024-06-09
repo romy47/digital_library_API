@@ -27,8 +27,8 @@ class SavedSearchController {
 
     async deleteSearches(req: IRequest, res: Response, next: NextFunction): Promise<void> {
         const stringSearchIds = (req.query.savedSearchIds as string).split(',');
-        const documentIds = stringSearchIds.map(id => new Types.ObjectId(id));
-        const delCount = await savedSearchService.deleteSearches(documentIds, req.user._id);
+        const searchIds = stringSearchIds.map(id => new Types.ObjectId(id));
+        const delCount = await savedSearchService.deleteSearches(searchIds, req.user._id);
         new SuccessResponse(`Success: Deleted ${delCount} Saved Queries`).send(res);
     }
 }
