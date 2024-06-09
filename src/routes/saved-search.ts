@@ -8,14 +8,26 @@ import { savedSearchController } from '../controllers/saved-search';
 
 const savedSearchRouter: Router = Router();
 
-savedSearchRouter.route('/').post(
-    catchAsyncError(restricted),
-    validate(createSavedSearchBodyValidatorSchema, ValidationSource.BODY),
-    catchAsyncError(savedSearchController.createSearch)
-);
-savedSearchRouter.route('/').get(
-    catchAsyncError(restricted),
-    catchAsyncError(savedSearchController.getSearches)
-);
+savedSearchRouter.route('/')
+    .post(
+        catchAsyncError(restricted),
+        validate(createSavedSearchBodyValidatorSchema, ValidationSource.BODY),
+        catchAsyncError(savedSearchController.createSearch)
+    ).get(
+        catchAsyncError(restricted),
+        catchAsyncError(savedSearchController.getSearches)
+    ).delete(
+        // Todo: JOI Validation for query params
+        catchAsyncError(restricted),
+        catchAsyncError(savedSearchController.deleteSearches)
+    );
+
+savedSearchRouter.route('/:savedSearchId')
+    .delete(
+        // Todo: JOI Validation
+        catchAsyncError(restricted),
+        catchAsyncError(savedSearchController.deleteSearch)
+    );
+
 
 export default savedSearchRouter;

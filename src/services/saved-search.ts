@@ -20,6 +20,14 @@ class SavedSearchService {
         const savedSearches = await savedSearchRepository.get(id);
         return savedSearches;
     }
+
+    async deleteSearch(searchId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
+        await savedSearchRepository.delete(searchId, userId);
+    }
+
+    async deleteSearches(searchIds: Types.ObjectId[], userId: Types.ObjectId): Promise<number> {
+        return await savedSearchRepository.deleteBatch(searchIds, userId);
+    }
 }
 
 export const savedSearchService = new SavedSearchService();
