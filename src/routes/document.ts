@@ -7,15 +7,21 @@ import { saveDocumentValidatorSchema } from '../validators/schemas/document-joi-
 
 const documentRouter: Router = Router();
 
-documentRouter.route('/').get(
-    catchAsyncError(restricted),
-    catchAsyncError(documentController.getSavedDocuments)
-);
+documentRouter.route('/')
+    .get(
+        catchAsyncError(restricted),
+        catchAsyncError(documentController.getSavedDocuments)
+    ).post(
+        catchAsyncError(restricted),
+        validate(saveDocumentValidatorSchema, ValidationSource.BODY),
+        catchAsyncError(documentController.saveDocument)
+    );
 
-documentRouter.route('/').post(
-    catchAsyncError(restricted),
-    validate(saveDocumentValidatorSchema, ValidationSource.BODY),
-    catchAsyncError(documentController.saveDocument)
-);
+documentRouter.route('/:documentId')
+    .delete(
+        catchAsyncError(restricted),
+        catchAsyncError(documentController.deleteDocument)
+    );
+
 
 export default documentRouter;

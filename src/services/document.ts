@@ -9,9 +9,12 @@ class DocumentService {
     }
 
     async saveDocument(document: IDocumentInput): Promise<IDocument> {
-
         const savedDocument = await documentRepository.create(document);
         return savedDocument;
+    }
+
+    async deleteDocument(documentId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
+        await documentRepository.delete(documentId, userId);
     }
 }
 

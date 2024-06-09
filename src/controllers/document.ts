@@ -5,6 +5,7 @@ import { SuccessResponse } from "../models/api-response";
 import { documentService } from "../services/document";
 import IRequest from "../models/request";
 import { IDocumentInput } from "../models/document";
+import { Types } from "mongoose";
 
 class DocumentController {
     async getSavedDocuments(req: IRequest, res: Response, next: NextFunction): Promise<void> {
@@ -41,6 +42,12 @@ class DocumentController {
         } as IDocumentInput;
         const savedDocument = await documentService.saveDocument(document);
         new SuccessResponse('Success', savedDocument).send(res);
+    }
+
+    async deleteDocument(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        const documentId = new Types.ObjectId(req.params['documentId']);
+        await documentService.deleteDocument(documentId, req.user._id);
+        new SuccessResponse('Success').send(res);
     }
 }
 
