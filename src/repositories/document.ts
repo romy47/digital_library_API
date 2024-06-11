@@ -7,7 +7,7 @@ class DocumentsRepository {
     async getByUserId(id: Types.ObjectId): Promise<IDocument[]> {
         return await DocumentModel.find({
             createdBy: id
-        }).populate('labels');
+        }).populate('labelsPopulated');
     }
 
     async create(document: IDocumentInput): Promise<IDocument> {

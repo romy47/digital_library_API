@@ -2,8 +2,8 @@ import { ObjectId, Schema, Types, model } from "mongoose";
 import { IDocument } from "./document";
 
 export interface ILabel {
-    _id: String,
-    title: String,
+    _id: Types.ObjectId,
+    title: string,
     documents?: Types.ObjectId[],
     createdBy: Types.ObjectId,
     createdAt: Date,

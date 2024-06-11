@@ -10,10 +10,8 @@ class LabelRepository {
         return savedLabel;
     }
 
-    async get(userId: Types.ObjectId): Promise<ISearch[]> {
-        return await SearchDocument.find({
-            createdBy: userId
-        });
+    async get(id: Types.ObjectId): Promise<ILabel | null> {
+        return await LabelModel.findById(id);
     }
 }
 

@@ -32,12 +32,13 @@ export interface IDocument {
     isSaved: Boolean,
     id: String,
     createdBy: Types.ObjectId,
-    labels: ILabel[],
+    labels: String[],
+    labelsPopulated?: ILabel[],
     createdAt: Date,
     updatedAt: Date
 }
 
-export interface IDocumentInput extends Omit<IDocument, 'createdAt' | 'updatedAt' | '_id'> {
+export interface IDocumentInput extends Omit<IDocument, 'createdAt' | 'updatedAt' | '_id' | 'labelsPopulated'> {
 }
 
 const facetSchema = new Schema<IFacet>({
@@ -149,5 +150,18 @@ const documentSchema = new Schema<IDocument>(
         timestamps: true,
     },
 )
+
+// creating a virtual field which links between the local foreign key 
+// and the related collection. 
+documentSchema.virtual('labelsPopulated', {
+    ref: 'Label',
+    localField: 'labels',
+    foreignField: '_id',
+    justOne: false
+});
+
+// telling Mongoose to retreive the virtual fields
+documentSchema.set('toObject', { virtuals: true });
+documentSchema.set('toJSON', { virtuals: true });
 
 export const DocumentModel = model<IDocument>('Document', documentSchema, 'documents');
