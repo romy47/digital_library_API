@@ -56,6 +56,13 @@ class DocumentController {
         const delCount = await documentService.deleteDocuments(documentIds, req.user._id);
         new SuccessResponse(`Success: Deleted ${delCount} documents`).send(res);
     }
+
+    async createOrUpdateMany(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        const documents = req.body.documents;
+        const label = req.body.label;
+        await documentService.createOrUpdateMany(documents, label, req.user._id);
+        new SuccessResponse('Success').send(res);
+    }
 }
 
 export const documentController = new DocumentController();

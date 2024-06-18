@@ -32,7 +32,7 @@ export interface IDocument {
     isSaved: Boolean,
     id: String,
     createdBy: Types.ObjectId,
-    labels: String[],
+    labels: Types.ObjectId[],
     labelsPopulated?: ILabel[],
     createdAt: Date,
     updatedAt: Date

@@ -1,7 +1,5 @@
 import Joi from 'joi';
-
-export const saveDocumentValidatorSchema = Joi.object().keys({
-
+export const baseDocumentValidatorSchema = Joi.object().keys({
     linkText: Joi.string().allow(null, ''),
     language: Joi.string().allow(null, ''),
     publisher: Joi.string().allow(null, ''),
@@ -42,4 +40,9 @@ export const saveDocumentValidatorSchema = Joi.object().keys({
     }),
     rawObject: Joi.object(),
     page: Joi.number(),
+})
+
+export const updateDocumentValidatorSchema = baseDocumentValidatorSchema.keys({
+    _id: Joi.string().allow(null),
+    createdBy: Joi.string().allow(null)
 })
