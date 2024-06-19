@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { ISearch, ISearchInput } from '../models/search';
+import { ISearch, ISearchInput, SavedSearchDocument } from '../models/search';
 import { searchRepository } from '../repositories/search';
 import fetch from 'cross-fetch';
 import { DefaultConfig } from '../config';
@@ -27,6 +27,21 @@ class SavedSearchService {
 
     async deleteSearches(searchIds: Types.ObjectId[], userId: Types.ObjectId): Promise<number> {
         return await savedSearchRepository.deleteBatch(searchIds, userId);
+    }
+
+    async createOrUpdateMany(savedSearches: ISearch[], userId: Types.ObjectId): Promise<void> {
+        savedSearches.forEach(search => {
+            search.createdBy = search.createdBy ? search.createdBy : userId;
+            search._id = search._id ?? new Types.ObjectId();
+        });
+
+        const bulkUpdate = await SavedSearchDocument.bulkWrite(savedSearches.map(search => ({
+            updateOne: {
+                filter: { _id: search._id ?? new Types.ObjectId() },
+                update: search,
+                upsert: true,
+            }
+        })));
     }
 }
 

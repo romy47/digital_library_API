@@ -1,12 +1,12 @@
 import Joi from 'joi';
 
 export const createSearchBodyValidatorSchema = Joi.object().keys({
-    searchTerm: Joi.string().required(),
+    searchQuery: Joi.string().required(),
     offset: Joi.number().required(),
 })
 
-export const createSavedSearchBodyValidatorSchema = Joi.object().keys({
-    searchTerm: Joi.string().required(),
+export const baseSearchValidatorSchema = Joi.object().keys({
+    searchQuery: Joi.string().required(),
     totalDocuments: Joi.number().required(),
 })
 
@@ -17,4 +17,9 @@ export const loginBodyValidatorSchema = Joi.object().keys({
 
 export const refreshValidatorSchema = Joi.object().keys({
     refreshToken: Joi.string().required(),
+})
+
+export const updateSearchValidatorSchema = baseSearchValidatorSchema.keys({
+    _id: Joi.string().allow(null),
+    createdBy: Joi.string().allow(null),
 })

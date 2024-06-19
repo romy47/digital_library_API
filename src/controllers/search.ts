@@ -7,9 +7,9 @@ import { savedSearchService } from "../services/saved-search";
 
 class SearchController {
     async createSearch(req: IRequest, res: Response, next: NextFunction): Promise<void> {
-        const searchTerm = req.body.searchTerm;
+        const searchQuery = req.body.searchQuery;
         const pageOffset = req.body.offset;
-        const search = await searchService.createSearch(searchTerm, pageOffset, req.user._id);
+        const search = await searchService.createSearch(searchQuery, pageOffset, req.user._id);
         new SuccessResponse('Success', search).send(res);
     }
 

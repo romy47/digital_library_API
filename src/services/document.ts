@@ -62,16 +62,7 @@ class DocumentService {
                 upsert: false,
             }
         )
-
-        console.log('Bulk: ', bulkUpdate)
     }
-    // documents.forEach(d => {
-    // d.labe
-    //     if (d._id == null || '')
-    // })
-    // let allDocumentIds = []
-
-    //     }
 }
 
 export const documentService = new DocumentService();

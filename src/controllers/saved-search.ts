@@ -8,9 +8,9 @@ import { documentService } from "../services/document";
 
 class SavedSearchController {
     async createSearch(req: IRequest, res: Response, next: NextFunction): Promise<void> {
-        const searchTerm = req.body.searchTerm;
+        const searchQuery = req.body.searchQuery;
         const totalDocuments = req.body.totalDocuments;
-        const search = await savedSearchService.createSearch(searchTerm, totalDocuments, req.user._id);
+        const search = await savedSearchService.createSearch(searchQuery, totalDocuments, req.user._id);
         new SuccessResponse('Success', search).send(res);
     }
 
@@ -30,6 +30,12 @@ class SavedSearchController {
         const searchIds = stringSearchIds.map(id => new Types.ObjectId(id));
         const delCount = await savedSearchService.deleteSearches(searchIds, req.user._id);
         new SuccessResponse(`Success: Deleted ${delCount} Saved Queries`).send(res);
+    }
+
+    async createOrUpdateMany(req: IRequest, res: Response, next: NextFunction): Promise<void> {
+        const savedSearches = req.body.savedSearches;
+        await savedSearchService.createOrUpdateMany(savedSearches, req.user._id);
+        new SuccessResponse('Success').send(res);
     }
 }
 
