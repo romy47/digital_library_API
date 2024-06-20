@@ -25,7 +25,7 @@ class DocumentService {
         return await documentRepository.deleteBatch(documentIds, userId);
     }
 
-    async createOrUpdateMany(documents: IDocument[], userId: Types.ObjectId, labelAdd?: ILabel, labelRemove?: ILabel): Promise<void> {
+    async createOrUpdateMany(documents: IDocument[], userId: Types.ObjectId, labelAdd?: ILabel, labelRemove?: ILabel): Promise<IDocument[]> {
         if (labelAdd) {
             if (labelAdd._id) {
                 const existingLabel = await labelRepository.get(labelAdd._id);
@@ -68,8 +68,9 @@ class DocumentService {
             }
         })));
 
+        let documentIds = documents.map(d => d._id);
         if (labelAdd) {
-            labelAdd.documents = documents.map(d => d._id);
+            labelAdd.documents = documentIds;
             LabelModel.updateOne(
                 {
                     filter: { _id: labelAdd._id },
@@ -78,6 +79,8 @@ class DocumentService {
                 }
             )
         }
+        const resultingDocuments = await DocumentModel.find().where('_id').in(documentIds).populate('labelsPopulated')
+        return resultingDocuments;
     }
 }
 

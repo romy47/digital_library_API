@@ -61,8 +61,8 @@ class DocumentController {
         const documents = req.body.documents;
         const labelAdd = req.body.labelAdd ?? null;
         const labelRemove = req.body.labelRemove ?? null;
-        await documentService.createOrUpdateMany(documents, req.user._id, labelAdd, labelRemove);
-        new SuccessResponse('Success').send(res);
+        const resultingDocuments = await documentService.createOrUpdateMany(documents, req.user._id, labelAdd, labelRemove);
+        new SuccessResponse('Success', { documents: resultingDocuments }).send(res);
     }
 }
 
