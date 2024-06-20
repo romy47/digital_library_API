@@ -7,5 +7,6 @@ export const baseLabelBodyValidatorSchema = Joi.object().keys({
 
 export const updateLabelBodyValidatorSchema = baseLabelBodyValidatorSchema.keys({
     _id: Joi.string().allow(null, ''),
+    createdBy: Joi.string().allow(null, ''),
 })
 

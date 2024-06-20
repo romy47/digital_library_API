@@ -59,8 +59,9 @@ class DocumentController {
 
     async createOrUpdateMany(req: IRequest, res: Response, next: NextFunction): Promise<void> {
         const documents = req.body.documents;
-        const label = req.body.label;
-        await documentService.createOrUpdateMany(documents, label, req.user._id);
+        const labelAdd = req.body.labelAdd ?? null;
+        const labelRemove = req.body.labelRemove ?? null;
+        await documentService.createOrUpdateMany(documents, req.user._id, labelAdd, labelRemove);
         new SuccessResponse('Success').send(res);
     }
 }

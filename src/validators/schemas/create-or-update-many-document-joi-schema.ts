@@ -6,5 +6,6 @@ export const createOrUpdateManyDocumentValidatorSchema = Joi.object().keys({
     documents: Joi.array().items(
         updateDocumentValidatorSchema
     ),
-    label: updateLabelBodyValidatorSchema
+    labelAdd: updateLabelBodyValidatorSchema.allow(null),
+    labelRemove: updateLabelBodyValidatorSchema.allow(null),
 })

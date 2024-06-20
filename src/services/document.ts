@@ -25,26 +25,40 @@ class DocumentService {
         return await documentRepository.deleteBatch(documentIds, userId);
     }
 
-    async createOrUpdateMany(documents: IDocument[], label: ILabel, userId: Types.ObjectId): Promise<void> {
-        if (label._id) {
-            const existingLabel = await labelRepository.get(label._id);
-            if (!existingLabel) {
-                throw new NotFoundError('Label not found');
+    async createOrUpdateMany(documents: IDocument[], userId: Types.ObjectId, labelAdd?: ILabel, labelRemove?: ILabel): Promise<void> {
+        if (labelAdd) {
+            if (labelAdd._id) {
+                const existingLabel = await labelRepository.get(labelAdd._id);
+                if (!existingLabel) {
+                    throw new NotFoundError('Label not found');
+                }
+                labelAdd = existingLabel
+            } else {
+                labelAdd = await labelService.createLabel(labelAdd.title, [], userId)
             }
-            label = existingLabel
-        } else {
-            label = await labelService.createLabel(label.title, [], userId)
+        }
+
+        if (labelRemove) {
+            await labelService.removeLabel(labelRemove)
         }
 
         documents.forEach(doc => {
             doc.createdBy = doc.createdBy ? doc.createdBy : userId;
             doc._id = doc._id ?? new Types.ObjectId();
-            if (doc.labels.indexOf(label._id) === -1) {
-                doc.labels.push(label._id);
+
+            if (labelAdd) {
+                if (doc.labels.indexOf(labelAdd._id) === -1) {
+                    doc.labels.push(labelAdd._id);
+                }
+            }
+
+            if (labelRemove) {
+                const removeIndex = doc.labels.indexOf(labelRemove._id);
+                if (removeIndex > -1) {
+                    doc.labels.splice(removeIndex, 1);
+                }
             }
         });
-
-        const allDocuments = documents.map(d => d._id)
 
         const bulkUpdate = await DocumentModel.bulkWrite(documents.map(doc => ({
             updateOne: {
@@ -54,14 +68,16 @@ class DocumentService {
             }
         })));
 
-        label.documents = allDocuments;
-        LabelModel.updateOne(
-            {
-                filter: { _id: label._id },
-                update: label,
-                upsert: false,
-            }
-        )
+        if (labelAdd) {
+            labelAdd.documents = documents.map(d => d._id);
+            LabelModel.updateOne(
+                {
+                    filter: { _id: labelAdd._id },
+                    update: labelAdd,
+                    upsert: false,
+                }
+            )
+        }
     }
 }
 

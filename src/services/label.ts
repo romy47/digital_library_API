@@ -12,6 +12,10 @@ class LabelService {
             } as ILabelInput);
         return label;
     }
+
+    async removeLabel(label: ILabel): Promise<void> {
+        await labelRepository.remove(label)
+    }
 }
 
 export const labelService = new LabelService();

@@ -13,6 +13,10 @@ class LabelRepository {
     async get(id: Types.ObjectId): Promise<ILabel | null> {
         return await LabelModel.findById(id);
     }
+
+    async remove(label: ILabel): Promise<void> {
+        await LabelModel.findById(label._id).deleteOne();
+    }
 }
 
 export const labelRepository = new LabelRepository();
