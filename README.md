@@ -28,9 +28,8 @@ This is the REST API of an academic digital library search interface built with 
     - **Business Layer**: Business logics are written in service files
     
     - **Presentation Layer**: Joi Input validation, Error handling, Proper custom HTTP response creation is done in routing and controller files
+    - Workflow: Route -> Controller -> Service -> Repository
 
-    Route -> Controller -> Service -> Repository
-    
 
 - Best practices for **RESTful API** implemented:
 
@@ -39,15 +38,15 @@ This is the REST API of an academic digital library search interface built with 
     - Using plural nouns for segmenting routes
     
     - Proper HTTP status code and consistent response messages are used to explain different types of errors and API response
-    
+
 - **Error Handling**:
     - Async errors are handled by a wrapper middleware function which is called with each controller function.
     - Synchronous errors are handled by another middleware which converts the thrown errors into custom error responses based on types of the errors 
     - Through the app, custom errors are thrown so that they can be properly processed by the synchronous error handler middleware
-    
+
 - **JOI Validation**
     - JOI validation schemas are written for validating incoming requests
-    
+
 - **Hot Reloading**
     - Nodemon is used in the development mode for hot reloading.
 
@@ -62,8 +61,10 @@ This is the REST API of an academic digital library search interface built with 
 2. Install: `$ npm install`
 
 3. Create environment variable files for development and production inside the environment directory. Use the '.env.example' as the example.
-4. Start app (dev): `$ npm start ` (prod): `$ npm prod-start`
+4. Start app 
+    - dev: `$ npm start `
+    - prod: `$ npm prod-start`
 
 ## Todo
 - Logging user interaction and errors with winston and morgan
-- Provide a Swagger endpoint for API documentation
+- Provide a Swagger endpoint for API documentation 
